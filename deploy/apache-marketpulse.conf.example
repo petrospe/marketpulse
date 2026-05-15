@@ -1,0 +1,55 @@
+# Copy to: /etc/apache2/sites-available/marketpulse.conf
+# Adjust ServerName, paths, and API port if needed.
+#
+# Requires: sudo a2enmod proxy proxy_http rewrite headers
+
+<VirtualHost *:80>
+    ServerName marketpulse.example.com
+    # ServerAlias www.marketpulse.example.com
+
+    DocumentRoot /var/www/marketpulse/dist
+
+    <Directory /var/www/marketpulse/dist>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+        # React Router: serve index.html for client routes (/login, /dashboard, ...)
+        FallbackResource /index.html
+    </Directory>
+
+    # API must be proxied before the SPA fallback applies to /api
+    ProxyPreserveHost On
+    RequestHeader set X-Forwarded-Proto "http"
+
+    ProxyPass        /api http://127.0.0.1:3001/api
+    ProxyPassReverse /api http://127.0.0.1:3001/api
+
+    ErrorLog ${APACHE_LOG_DIR}/marketpulse-error.log
+    CustomLog ${APACHE_LOG_DIR}/marketpulse-access.log combined
+</VirtualHost>
+
+# --- Optional HTTPS (after certbot or manual certs) ---
+# <VirtualHost *:443>
+#     ServerName marketpulse.example.com
+#     DocumentRoot /var/www/marketpulse/dist
+#
+#     SSLEngine on
+#     SSLCertificateFile /etc/letsencrypt/live/marketpulse.example.com/fullchain.pem
+#     SSLCertificateKeyFile /etc/letsencrypt/live/marketpulse.example.com/privkey.pem
+#
+#     <Directory /var/www/marketpulse/dist>
+#         Options -Indexes +FollowSymLinks
+#         AllowOverride None
+#         Require all granted
+#         FallbackResource /index.html
+#     </Directory>
+#
+#     ProxyPreserveHost On
+#     RequestHeader set X-Forwarded-Proto "https"
+#
+#     ProxyPass        /api http://127.0.0.1:3001/api
+#     ProxyPassReverse /api http://127.0.0.1:3001/api
+#
+#     ErrorLog ${APACHE_LOG_DIR}/marketpulse-ssl-error.log
+#     CustomLog ${APACHE_LOG_DIR}/marketpulse-ssl-access.log combined
+# </VirtualHost>
