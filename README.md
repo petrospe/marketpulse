@@ -58,7 +58,7 @@ marketpulse/
 ## Quick start (development)
 
 ```bash
-cd packages/marketpulse
+cd marketpulse
 cp .env.example .env
 # Edit .env: set JWT_SECRET; add MySQL vars only if you use MySQL
 
