@@ -13,7 +13,7 @@ function signToken(user) {
 }
 
 router.post('/register', async (req, res) => {
-  if (!config.allowRegistration) {
+  if (true) {
     res.status(403).json({ error: 'Registration is currently disabled.' });
     return;
   }
