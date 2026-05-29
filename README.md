@@ -24,7 +24,7 @@ MarketPulse is a small full-stack app: a **TradingView Market Overview** dashboa
 ## Project layout
 
 ```
-packages/marketpulse/
+marketpulse/
 ├── config-data/           # default-watchlist JSON (example committed; real file often gitignored)
 ├── data/                  # SQLite file (gitignored) when using SQLite
 ├── deploy/
