@@ -29,7 +29,6 @@ export function resolveDbDriver() {
 }
 
 export const config = {
-  allowRegistration: process.env.ALLOW_REGISTRATION ?? 'false',
   port: Number(process.env.PORT ?? 3001),
   jwtSecret: process.env.JWT_SECRET ?? 'dev-only-change-in-production',
   dbDriver: resolveDbDriver(),
